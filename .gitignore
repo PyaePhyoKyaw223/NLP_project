@@ -1,0 +1,31 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Model files
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# Uploaded files
+uploads/
+*.pdf
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
