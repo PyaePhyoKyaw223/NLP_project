@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pymupdf
+transformers
+torch
+httpx
+python-dotenv
+pytest
+huggingface_hub

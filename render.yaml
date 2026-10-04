@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: myanmar-ml-service
+    runtime: python
+    rootDir: ml-service
+    buildCommand: pip install -r requirements.txt && hf download $MODEL_REPO_ID --local-dir models/myanmar-ner-final --token $HF_TOKEN
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: MYANMAR_NER_MODEL_PATH
+        value: ./models/myanmar-ner-final
+      - key: MODEL_REPO_ID
+        sync: false
+      - key: HF_TOKEN
+        sync: false
+      - key: NER_MAX_LENGTH
+        value: "512"
+      - key: MAX_CHUNK_CHARACTERS
+        value: "12000"
+      - key: LLM_API_URL
+        value: https://api.openai.com/v1/chat/completions
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_MODEL
+        sync: false
+      - key: LLM_TIMEOUT_SECONDS
+        value: "120"
+
+  - type: web
+    name: myanmar-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: ML_SERVICE_URL
+        sync: false
+      - key: MAX_FILE_SIZE_MB
+        value: "25"
+      - key: CORS_ORIGIN
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: documents
